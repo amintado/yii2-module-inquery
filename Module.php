@@ -29,7 +29,7 @@ class Module extends \yii\base\Module
     public $mailSend = false;
 
     /** @var string Тема email сообщения когда пользователю приходит ответ */
-    public $subjectAnswer = 'پاسخ درخواست پشتیبانی شما';
+    public $subjectAnswer = 'پاسخ درخواست استعلام شما';
 
 
 }
