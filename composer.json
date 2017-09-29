@@ -1,0 +1,26 @@
+{
+    "name": "amintado/yii2-module-inquery",
+    "description": "A ticket system for Yii2 websites",
+    "keywords": ["yii2", "yii2-inquery", "inquery system","amintado"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "version": "1.0.8",
+    "homepage": "https://github.com/amintado/yii2-module-inquery",
+    "authors": [
+        {
+            "name": "amintado",
+            "email": "amintado@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "amintado/yii2-amintado-global-functions":"@dev",
+        "yiisoft/yii2": "~2.0.6",
+        "yiisoft/yii2-bootstrap": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "amintado\\inquery\\": ""
+        }
+    }
+}
