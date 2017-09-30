@@ -18,7 +18,7 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "kartik-v/yii2-datecontrol": "@dev",
-        "amintado/bootstrap-persian-datetimepicker":"v4.0.0"
+        "eonasdan/bootstrap-datetimepicker":"v4.0.x"
     },
     "autoload": {
         "psr-4": {
