@@ -1,26 +1,16 @@
 <?php
-/*******************************************************************************
- * Copyright (c) 2017.
- * this file created in printing-office project
- * framework: Yii2
- * license: GPL V3 2017 - 2025
- * Author:amintado@gmail.com
- * Company:shahrmap.ir
- * Official GitHub Page: https://github.com/amintado/printing-office
- * All rights reserved.
- ******************************************************************************/
 
 namespace amintado\inquery\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-
+use amintado\inquery\models\base\Inquery;
 
 /**
- * InquerySearch represents the model behind the search form about `common\models\Inquery`.
+ * amintado\inquery\models\\InquerySearch represents the model behind the search form about `amintado\inquery\models\base\Inquery`.
  */
-class InquerySearch extends Inquery
+ class InquerySearch extends Inquery
 {
     /**
      * @inheritdoc
@@ -28,7 +18,7 @@ class InquerySearch extends Inquery
     public function rules()
     {
         return [
-            [['id', 'uid', 'category', 'lock', 'created_by', 'updated_by', 'deleted_by', 'restored_by'], 'integer'],
+            [['id', 'uid', 'category', 'lock', 'created_by', 'updated_by', 'deleted_by', 'restored_by', 'status'], 'integer'],
             [['qdescription', 'qfile', 'qdate', 'adate', 'afile', 'adescription', 'UUID', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -53,8 +43,6 @@ class InquerySearch extends Inquery
     {
         $query = Inquery::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -67,7 +55,6 @@ class InquerySearch extends Inquery
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'uid' => $this->uid,
@@ -81,6 +68,7 @@ class InquerySearch extends Inquery
             'updated_by' => $this->updated_by,
             'deleted_by' => $this->deleted_by,
             'restored_by' => $this->restored_by,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'qdescription', $this->qdescription])

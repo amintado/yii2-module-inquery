@@ -135,7 +135,7 @@ class Inquery extends \yii\db\ActiveRecord
      */
     public function getCategory0()
     {
-        return $this->hasOne(\common\models\InqueryCategory::className(), ['id' => 'category']);
+        return $this->hasOne(\amintado\inquery\models\InqueryCategory::className(), ['id' => 'category']);
     }
         
     /**
@@ -195,7 +195,7 @@ class Inquery extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        $query = new \common\models\InqueryQuery(get_called_class());
+        $query = new \amintado\inquery\models\InqueryQuery(get_called_class());
         return $query->where(['deleted_by' => 0]);
     }
 }
