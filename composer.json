@@ -18,7 +18,13 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "kartik-v/yii2-datecontrol": "@dev",
+<<<<<<< HEAD
+        "eonasdan/bootstrap-datetimepicker":"v4.0.x",
+        "kartik-v/yii2-grid": "@dev",
+        "mootensai/yii2-relation-trait": "*"
+=======
         "eonasdan/bootstrap-datetimepicker":"@dev"
+>>>>>>> b0b34775d4851d37e43138f772d5f4d60ed1071e
     },
     "autoload": {
         "psr-4": {

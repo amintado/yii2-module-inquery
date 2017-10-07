@@ -13,6 +13,7 @@
 namespace amintado\inquery\models\base;
 
 use amintado\inquery\models\traits\GlobalTrait;
+use CouchbaseStringSearchQuery;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -37,9 +38,14 @@ use yii\behaviors\BlameableBehavior;
  * @property string $updated_by
  * @property string $deleted_by
  * @property string $restored_by
+ * @property integer $status
+ * @property string $file
  *
- * @property \common\models\InqueryCategory $category0
- * @property \common\models\TabanUsers $u
+ *
+ *
+ * @property string $statusHtml
+ * @property \amintado\inquery\models\InqueryCategory $category0
+ * @property \common\models\User $u
  */
 class Inquery extends \yii\db\ActiveRecord
 {
@@ -49,6 +55,25 @@ class Inquery extends \yii\db\ActiveRecord
     private $_rt_softdelete;
     private $_rt_softrestore;
 
+    const STATUS_WAIT=0;
+    const STATUS_VIEW=1;
+    const STATUS_ANSWERED=2;
+
+    public $file;
+
+    public function getStatusHtml(){
+        switch ($this->status){
+            case self::STATUS_WAIT:
+                return '<span class="label label-default">'. Yii::t('amintado_inquery', 'status wait').'</span>';
+            break;
+            case self::STATUS_VIEW:
+                return '<span class="label label-info">'. Yii::t('amintado_inquery', 'status viewed').'</span>';
+                break;
+            case self::STATUS_ANSWERED:
+                return '<span class="label label-success">'. Yii::t('amintado_inquery', 'status answered').'</span>';
+
+        }
+    }
     public function __construct(){
         parent::__construct();
         $this->_rt_softdelete = [
@@ -79,11 +104,11 @@ class Inquery extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uid', 'category', 'lock', 'created_by', 'updated_by', 'deleted_by', 'restored_by'], 'integer'],
-            [['qdescription', 'adescription'], 'required'],
+            [['uid', 'category', 'lock', 'created_by', 'updated_by', 'deleted_by', 'restored_by','status'], 'integer'],
+            [['qdescription'], 'required'],
             [['qdate', 'adate', 'created_at', 'updated_at'], 'safe'],
             [['qdescription', 'adescription'], 'string', 'max' => 2000],
-            [['qfile', 'afile'], 'string', 'max' => 255],
+            [['qfile', 'afile','file'], 'string', 'max' => 255],
             [['UUID'], 'string', 'max' => 32],
             [['lock'], 'default', 'value' => '0'],
             [['lock'], 'mootensai\components\OptimisticLockValidator']
@@ -143,7 +168,7 @@ class Inquery extends \yii\db\ActiveRecord
      */
     public function getU()
     {
-        return $this->hasOne(\common\models\User::className(), ['id' => 'uid']);
+        return $this->hasOne(\common\models\User::className(), ['id' => 'created_by']);
     }
     
     /**
@@ -189,13 +214,5 @@ class Inquery extends \yii\db\ActiveRecord
      * ```
      */
 
-    /**
-     * @inheritdoc
-     * @return \common\models\InqueryQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new \amintado\inquery\models\InqueryQuery(get_called_class());
-        return $query->where(['deleted_by' => 0]);
-    }
+
 }

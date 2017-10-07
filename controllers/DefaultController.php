@@ -5,9 +5,12 @@ namespace amintado\inquery\controllers;
 use Yii;
 use amintado\inquery\models\base\Inquery;
 use amintado\inquery\models\InquerySearch;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * InqueryController implements the CRUD actions for Inquery model.
@@ -21,6 +24,7 @@ class DefaultController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'create' => ['post']
                 ],
             ],
             'access' => [
@@ -46,7 +50,7 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         $searchModel = new InquerySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchAll(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -74,56 +78,59 @@ class DefaultController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new Inquery();
-
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $post = Yii::$app->request->post();
+        if (empty($post['Inquery'])) {
+            throw new BadRequestHttpException(Yii::t('amintado_inquery', 'No Submitted Data'));
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            $post = $post['Inquery'];
         }
-    }
+        $model->qdate = date('ymd');
+        $model->qdescription = $post['qdescription'];
+        $model->created_by = Yii::$app->user->id;
+        $model->created_at=date('ymd');
+        $model->status=Inquery::STATUS_WAIT;
+        $model->category=$post['category'];
+        if ($model->validate() && $model->save()){
+            $image=UploadedFile::getInstancesByName('Inquery[qfile]');
 
-    /**
-     * Updates an existing Inquery model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+            if (!empty($image)){
+                if (!realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory))){
+                    mkdir(Yii::getAlias(Yii::$app->controller->module->filesDirectory),0777,true);
+                    $directory=realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
+                    $hash=hash('adler32',$model->id);
+                    if ($image[0]->saveAs($directory.'/'.$hash.'.'.$image[0]->extension)){
+                        $model->qfile=$hash.'.'.$image[0]->extension;
+                        $model->save();
+                    }
+                }else{
 
-        if ($model->loadAll(Yii::$app->request->post()) && $model->saveAll()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+                    $directory=realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
+
+                    $hash=hash('adler32',$model->id);
+                    if ($image[0]->saveAs($directory.'/'.$hash.'.'.$image[0]->extension)){
+                        $model->qfile=$hash.'.'.$image[0]->extension;
+                        $model->save();
+                    }
+                }
         }
+
+        return $this->redirect(['view','id'=>$model->id]);
+        }else{
+            return $this->render('create', ['model' => $model]);
+        }
+
     }
 
     /**
-     * Deletes an existing Inquery model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->deleteWithRelated();
-
-        return $this->redirect(['index']);
-    }
-    
-    /**
-     * 
+     *
      * Export Inquery information into PDF format.
      * @param integer $id
      * @return mixed
      */
-    public function actionPdf($id) {
+    public function actionPdf($id)
+    {
         $model = $this->findModel($id);
 
         $content = $this->renderAjax('_pdf', [
@@ -148,7 +155,6 @@ class DefaultController extends Controller
         return $pdf->render();
     }
 
-    
     /**
      * Finds the Inquery model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

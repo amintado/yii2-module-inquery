@@ -1,4 +1,15 @@
 <?php
+/*******************************************************************************
+ * Copyright (c) 2017.
+ * this file created in printing-office project
+ * framework: Yii2
+ * license: GPL V3 2017 - 2025
+ * Author:amintado@gmail.com
+ * Company:shahrmap.ir
+ * Official GitHub Page: https://github.com/amintado/printing-office
+ * All rights reserved.
+ ******************************************************************************/
+
 /**
  * Message translations.
  *
@@ -17,24 +28,46 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Cancel' => '',
-    'Confirmation' => '',
-    'Information' => '',
-    'Ok' => '',
+    'Confirmation' => 'تایید',
+    'Information' => 'اطلاعات',
+    'Ok' => 'تایید',
 
-    'ID'=>'شناسه',
-    'Name'=>'نام',
-    'Description'=>'توضیحات',
-    'Hash ID'=>'کد اسلاید',
-    'Position'=>'مکان ابزارک',
-    'Css ID'=>'آی دی تگ (گره)',
-    'Css Class'=>'اسامی کلاس سفارشی',
-    'Css Style'=>'کد اسلاید سفارشی',
-    'Html Class'=>'اسامی کلاس سفارشی',
-    'Html Style'=>'کد اسلاید سفارشی',
-    'Data Ls'=>'کد انیمیشن',
-    'Composer ID'=>'شناسه قاب(Composer)',
-    'Bg'=>'پشت زمینه',
-    'Slide Composers'=>'قاب اسلایدر',
-    'Create Slide Composer'=>'ایجاد قاب جدید',
+    'Inqueries' => 'لیست استعلام قیمت',
+    'qdate' => 'تاریخ درخواست',
+    'Uid' => 'نام کاربری',
+    'Category' => 'موضوع استعلام',
+    'Taban inquery category' => 'دسته ی موضوعی استعلام',
+    'Choose Taban inquery category' => 'موضوع استعلام را انتخاب کنید',
+    'No Submitted Data' => 'اطلاعاتی ارسال نشده است',
+    'qdescription' => 'متن درخواست',
+    'Inquery' => 'استعلام',
+    'Inquery in time' => 'نمایش استعلام گرفته شده در تاریخ',
+    'request data' => 'اطلاعات درخواست',
+    'request text' => 'متن درخواست',
+    'qfile' => 'فایل پیوست',
+    'category' => 'موضوع استعلام',
+    'answer' => 'پاسخ استعلام',
+    'adescription' => 'متن پاسخ',
+    'Bad Confirm request' => 'متاسفانه این درخواست وجود ندارد',
+    'status' => 'وضعیت',
+    'status wait' => 'در انتظار',
+    'status viewed' => 'در حال بررسی',
+    'status answered' => 'پاسخ داده شد',
+    'Create Inquery' => 'استعلام جدید',
+    'Create' => 'ارسال',
+    'Cancel' => 'لغو',
+    'user name' => 'نام کاربری',
+    'user fullname' => 'نام کاربر',
+    'user data' => 'اطلاعات کاربر',
+    'confirm status success alert' => 'این درخواست قبلا تایید شده است و قابل بررسی نیست',
+    'Inquery Categories' => 'دسته بندی موضوعی استعلام ها',
+    'Create Inquery Category' => 'ثبت موضوع جدید',
+    'full' => 'کامل',
+    'export all data' => 'استخراج همه ی داده ها',
+    'Catname' => 'موضوع',
+    'Description' => 'توضیحات',
+    'Catname placeholder' => 'موضوع خود را درج کنید',
+    'Inquery Category' => 'موضوع استعلام',
+    'Update'=>'بروزرسانی',
+    'Delete'=>'حذف'
 ];

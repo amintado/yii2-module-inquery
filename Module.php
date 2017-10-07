@@ -33,6 +33,10 @@ class Module extends \yii\base\Module
     public $subjectAnswer = 'پاسخ درخواست استعلام شما';
 
 
+    public $jalaliDate=true;
+
+    public $filesDirectory='@frontend/dl';
+    public $downloadUrl='http://taban.dev/frontend/dl';
     public function init()
     {
         $this->initI18N();

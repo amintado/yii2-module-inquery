@@ -41,6 +41,11 @@ use amintado\inquery\models\base\Inquery;
      */
     public function search($params)
     {
+
+        $statuses=
+            [
+                Inquery::STATUS_VIEW,Inquery::STATUS_WAIT
+            ];
         $query = Inquery::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -54,7 +59,7 @@ use amintado\inquery\models\base\Inquery;
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $query->where(['status'=>$statuses]);
         $query->andFilterWhere([
             'id' => $this->id,
             'uid' => $this->uid,
@@ -79,4 +84,54 @@ use amintado\inquery\models\base\Inquery;
 
         return $dataProvider;
     }
+
+     /**
+      * Creates data provider instance with search query applied
+      *
+      * @param array $params
+      *
+      * @return ActiveDataProvider
+      */
+     public function searchAll($params)
+     {
+
+
+         $query = Inquery::find();
+
+         $dataProvider = new ActiveDataProvider([
+             'query' => $query,
+         ]);
+
+         $this->load($params);
+
+         if (!$this->validate()) {
+             // uncomment the following line if you do not want to return any records when validation fails
+             // $query->where('0=1');
+             return $dataProvider;
+         }
+
+         $query->andFilterWhere([
+             'id' => $this->id,
+             'uid' => $this->uid,
+             'qdate' => $this->qdate,
+             'adate' => $this->adate,
+             'category' => $this->category,
+             'lock' => $this->lock,
+             'created_at' => $this->created_at,
+             'updated_at' => $this->updated_at,
+             'created_by' => $this->created_by,
+             'updated_by' => $this->updated_by,
+             'deleted_by' => $this->deleted_by,
+             'restored_by' => $this->restored_by,
+             'status' => $this->status,
+         ]);
+
+         $query->andFilterWhere(['like', 'qdescription', $this->qdescription])
+             ->andFilterWhere(['like', 'qfile', $this->qfile])
+             ->andFilterWhere(['like', 'afile', $this->afile])
+             ->andFilterWhere(['like', 'adescription', $this->adescription])
+             ->andFilterWhere(['like', 'UUID', $this->UUID]);
+
+         return $dataProvider;
+     }
 }

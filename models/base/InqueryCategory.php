@@ -54,17 +54,6 @@ class InqueryCategory extends \yii\db\ActiveRecord
     }
 
     /**
-    * This function helps \mootensai\relation\RelationTrait runs faster
-    * @return array relation names of this model
-    */
-    public function relationNames()
-    {
-        return [
-            'Inqueries'
-        ];
-    }
-
-    /**
      * @inheritdoc
      */
     public function rules()
@@ -106,22 +95,22 @@ class InqueryCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('common', 'ID'),
-            'catname' => Yii::t('common', 'Catname'),
-            'description' => Yii::t('common', 'Description'),
-            'date' => Yii::t('common', 'Date'),
-            'UUID' => Yii::t('common', 'Uuid'),
-            'lock' => Yii::t('common', 'Lock'),
-            'restored_by' => Yii::t('common', 'Restored By'),
+            'id' => Yii::t('amintado_inquery', 'ID'),
+            'catname' => Yii::t('amintado_inquery', 'Catname'),
+            'description' => Yii::t('amintado_inquery', 'Description'),
+            'date' => Yii::t('amintado_inquery', 'Date'),
+            'UUID' => Yii::t('amintado_inquery', 'Uuid'),
+            'lock' => Yii::t('amintado_inquery', 'Lock'),
+            'restored_by' => Yii::t('amintado_inquery', 'Restored By'),
         ];
     }
     
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTabanInqueries()
+    public function getInqueries()
     {
-        return $this->hasMany(\common\models\Inquery::className(), ['category' => 'id']);
+        return $this->hasMany(\amintado\inquery\models\Inquery::className(), ['category' => 'id']);
     }
     
     /**
@@ -145,35 +134,7 @@ class InqueryCategory extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * The following code shows how to apply a default condition for all queries:
-     *
-     * ```php
-     * class Customer extends ActiveRecord
-     * {
-     *     public static function find()
-     *     {
-     *         return parent::find()->where(['deleted' => false]);
-     *     }
-     * }
-     *
-     * // Use andWhere()/orWhere() to apply the default condition
-     * // SELECT FROM customer WHERE `deleted`=:deleted AND age>30
-     * $customers = Customer::find()->andWhere('age>30')->all();
-     *
-     * // Use where() to ignore the default condition
-     * // SELECT FROM customer WHERE age>30
-     * $customers = Customer::find()->where('age>30')->all();
-     * ```
-     */
 
-    /**
-     * @inheritdoc
-     * @return \common\models\InqueryCategoryQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        $query = new \common\models\InqueryCategoryQuery(get_called_class());
-        return $query->where(['deleted_by' => 0]);
-    }
+
+
 }

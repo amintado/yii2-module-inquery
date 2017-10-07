@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="panel-heading">
                                 <h3 class="panel-title"><?= Yii::t('amintado_inquery', 'category') ?></h3>
                             </div>
-                            <div class="panel-body" >
+                            <div class="panel-body">
                                 <?php
                                 echo $model->category0->catname;
                                 ?>
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div class="panel-heading">
                             <h3 class="panel-title"><?= Yii::t('amintado_inquery', 'request text') ?></h3>
                         </div>
-                        <div class="panel-body" style="min-height: 90px">
+                        <div class="panel-body">
                             <?= Html::decode($model->qdescription) ?>
                         </div>
                     </div>

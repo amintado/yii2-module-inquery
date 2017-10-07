@@ -1,4 +1,14 @@
 <?php
+/*******************************************************************************
+ * Copyright (c) 2017.
+ * this file created in printing-office project
+ * framework: Yii2
+ * license: GPL V3 2017 - 2025
+ * Author:amintado@gmail.com
+ * Company:shahrmap.ir
+ * Official GitHub Page: https://github.com/amintado/printing-office
+ * All rights reserved.
+ ******************************************************************************/
 
 /* @var $this yii\web\View */
 /* @var $searchModel amintado\inquery\models\\InquerySearch */
@@ -71,7 +81,7 @@ Modal::end()
         ],
         [
             'attribute' => 'qdescription',
-            'format'=>'html'
+            'format' => 'html'
         ],
         [
             'attribute' => 'qdate',
@@ -82,7 +92,7 @@ Modal::end()
                  */
                 if (Yii::$app->language == 'fa-IR') {
                     if (!empty($model->qdate)) {
-                        return (new amintado\base\AmintadoFunctions())->convertdate($model->qdate);
+                        return (new amintado\base\AmintadoFunctions())->convertdatetime($model->qdate);
                     }
                 }
             }
@@ -123,7 +133,13 @@ Modal::end()
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{view}'
+            'template' => '{view} {delete} {confirm}',
+            'buttons' =>
+                [
+                    'confirm' => function ($url, $model, $key) {
+                        return '<a href="' . $url . '" title="'. Yii::t('amintado_inquery', 'Confirmation').'" aria-label="'. Yii::t('amintado_inquery', 'Confirmation').'" data-pjax="0"><span class="glyphicon glyphicon-ok"></span></a>';
+                    }
+                ]
         ],
     ];
     ?>
@@ -146,10 +162,10 @@ Modal::end()
                 'target' => ExportMenu::TARGET_BLANK,
                 'fontAwesome' => true,
                 'dropdownOptions' => [
-                    'label' => 'کامل',
+                    'label' => 'Full',
                     'class' => 'btn btn-default',
                     'itemsBefore' => [
-                        '<li class="dropdown-header">استخراج همه ی اطلاعات</li>',
+                        '<li class="dropdown-header">Export All Data</li>',
                     ],
                 ],
             ]),
