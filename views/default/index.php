@@ -57,18 +57,18 @@ Modal::end()
     $gridColumn = [
         ['class' => 'yii\grid\SerialColumn'],
         ['attribute' => 'id', 'visible' => false],
-        [
-            'attribute' => 'uid',
-            'label' => Yii::t('amintado_inquery', 'Uid'),
-            'value' => function ($model) {
-                if ($model->u) {
-                    return $model->u->username;
-                } else {
-                    return NULL;
-                }
-            },
-            'filterType' => GridView::TEXT,
-        ],
+//        [
+//            'attribute' => 'uid',
+//            'label' => Yii::t('amintado_inquery', 'Uid'),
+//            'value' => function ($model) {
+//                if ($model->u) {
+//                    return $model->u->username;
+//                } else {
+//                    return NULL;
+//                }
+//            },
+//            'filterType' => GridView::TEXT,
+//        ],
         [
             'attribute' => 'qdescription',
             'format'=>'html'
@@ -94,13 +94,13 @@ Modal::end()
             'label' => Yii::t('amintado_inquery', 'Category'),
             'value' => function ($model) {
                 if ($model->category0) {
-                    return $model->category0->id;
+                    return $model->category0->catname;
                 } else {
                     return NULL;
                 }
             },
             'filterType' => GridView::FILTER_SELECT2,
-            'filter' => \yii\helpers\ArrayHelper::map(\amintado\inquery\models\base\InqueryCategory::find()->asArray()->all(), 'id', 'id'),
+            'filter' => \yii\helpers\ArrayHelper::map(\amintado\inquery\models\base\InqueryCategory::find()->asArray()->all(), 'id', 'catname'),
             'filterWidgetOptions' => [
                 'pluginOptions' => ['allowClear' => true],
             ],

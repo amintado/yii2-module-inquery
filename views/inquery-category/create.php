@@ -7,8 +7,7 @@ use yii\helpers\Html;
 /* @var $model amintado\inquery\models\base\InqueryCategory */
 
 $this->title = Yii::t('amintado_inquery', 'Create Inquery Category');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('amintado_inquery', 'Inquery Categories'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="inquery-category-create">
 

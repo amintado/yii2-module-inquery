@@ -1,5 +1,6 @@
 <?php
 
+use amintado\base\AmintadoFunctions;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use kartik\grid\GridView;
@@ -7,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $model amintado\inquery\models\base\Inquery */
 
-$this->title = Yii::t('amintado_inquery', 'Inquery in time') . ' ' . $model->created_at;
+$this->title = Yii::t('amintado_inquery', 'Inquery in time') . ' ' .(new AmintadoFunctions())->convertdate($model->created_at);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('amintado_inquery', 'Inqueries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
