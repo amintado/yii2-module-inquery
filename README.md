@@ -75,8 +75,8 @@ this module now translated to persian language
 you can Fork and send pull request in 'master' branch to translate it to your language
 
 ## languages
--[X] Persian:Full
--[X] English:90%
+- [X] Persian:Full
+- [X] English:90%
 
 ## date
 - [X] Jalali/Shamsi
