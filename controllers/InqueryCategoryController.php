@@ -32,6 +32,41 @@ class InqueryCategoryController extends Controller
                         'roles' => ['@']
                     ],
                     [
+                        'allow' => true,
+                        'actions' => ['index'],
+                        'roles' => ['InqueryCategoryIndex']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['view'],
+                        'roles' => ['InqueryCategoryView']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['InqueryCategoryCreate']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['InqueryCategoryUpdate']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete'],
+                        'roles' => ['InqueryCategoryDelete']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['pdf'],
+                        'roles' => ['InqueryCategoryPdf']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['help'],
+                        'roles' => ['InqueryCategoryHelp']
+                    ],
+                    [
                         'allow' => false
                     ]
                 ]

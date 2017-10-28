@@ -2,6 +2,7 @@
 
 namespace amintado\inquery\controllers;
 
+use amintado\inquery\Module;
 use Yii;
 use amintado\inquery\models\base\Inquery;
 use amintado\inquery\models\InquerySearch;
@@ -23,7 +24,6 @@ class DefaultController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
                     'create' => ['post']
                 ],
             ],
@@ -32,7 +32,7 @@ class DefaultController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf'],
+                        'actions' => ['index', 'view', 'create', 'pdf'],
                         'roles' => ['@']
                     ],
                     [
@@ -43,6 +43,7 @@ class DefaultController extends Controller
         ];
     }
 
+
     /**
      * Lists all Inquery models.
      * @return mixed
@@ -52,11 +53,12 @@ class DefaultController extends Controller
         $searchModel = new InquerySearch();
         $dataProvider = $searchModel->searchAll(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('@vendor/amintado/yii2-module-inquery/views/default/index.php', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     /**
      * Displays a single Inquery model.
@@ -66,7 +68,7 @@ class DefaultController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        return $this->render('view', [
+        return $this->render('@vendor/amintado/yii2-module-inquery/views/default/view.php', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -89,36 +91,37 @@ class DefaultController extends Controller
         $model->qdate = date('ymd');
         $model->qdescription = $post['qdescription'];
         $model->created_by = Yii::$app->user->id;
-        $model->created_at=date('ymd');
-        $model->status=Inquery::STATUS_WAIT;
-        $model->category=$post['category'];
-        if ($model->validate() && $model->save()){
-            $image=UploadedFile::getInstancesByName('Inquery[qfile]');
+        $model->created_at = date('ymd');
+        $model->status = Inquery::STATUS_WAIT;
+        $model->category = $post['category'];
+        if ($model->validate() && $model->save()) {
+            $image = UploadedFile::getInstancesByName('Inquery[qfile]');
 
-            if (!empty($image)){
-                if (!realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory))){
-                    mkdir(Yii::getAlias(Yii::$app->controller->module->filesDirectory),0777,true);
-                    $directory=realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
-                    $hash=hash('adler32',$model->id);
-                    if ($image[0]->saveAs($directory.'/'.$hash.'.'.$image[0]->extension)){
-                        $model->qfile=$hash.'.'.$image[0]->extension;
+            if (!empty($image)) {
+                if (!realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory))) {
+                    mkdir(Yii::getAlias(Yii::$app->controller->module->filesDirectory), 0777, true);
+                    $directory = realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
+                    $hash = hash('adler32', $model->id);
+                    if ($image[0]->saveAs($directory . '/' . $hash . '.' . $image[0]->extension)) {
+                        $model->qfile = $hash . '.' . $image[0]->extension;
                         $model->save();
                     }
-                }else{
+                } else {
 
-                    $directory=realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
+                    $directory = realpath(Yii::getAlias(Yii::$app->controller->module->filesDirectory));
 
-                    $hash=hash('adler32',$model->id);
-                    if ($image[0]->saveAs($directory.'/'.$hash.'.'.$image[0]->extension)){
-                        $model->qfile=$hash.'.'.$image[0]->extension;
+                    $hash = hash('adler32', $model->id);
+                    if ($image[0]->saveAs($directory . '/' . $hash . '.' . $image[0]->extension)) {
+                        $model->qfile = $hash . '.' . $image[0]->extension;
                         $model->save();
                     }
                 }
-        }
-
-        return $this->redirect(['view','id'=>$model->id]);
-        }else{
-            return $this->render('create', ['model' => $model]);
+            }
+            $this->module->eventClass::afterCreate($model);
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            $this->module->eventClass::CreateError($model);
+            return $this->render('@vendor/amintado/yii2-module-inquery/views/default/create.php', ['model' => $model]);
         }
 
     }

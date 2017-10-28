@@ -7,8 +7,12 @@ use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model amintado\inquery\models\base\Inquery */
-
-$this->title = Yii::t('amintado_inquery', 'Inquery in time') . ' ' .(new AmintadoFunctions())->convertdate($model->created_at);
+if (Yii::$app->controller->module->jalaliDate){
+    $date=(new AmintadoFunctions())->convertdate($model->created_at);
+}else{
+    $date=$model->created_at;
+}
+$this->title = Yii::t('amintado_inquery', 'Inquery in time') . ' ' .$date;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('amintado_inquery', 'Inqueries'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

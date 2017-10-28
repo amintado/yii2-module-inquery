@@ -40,11 +40,46 @@ class ManageController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
                 'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'pdf','confirm'],
-                        'roles' => ['@']
-                    ],
+                            [
+                                                    'allow' => true,
+                                                    'actions' => ['index'],
+                                                    'roles' => ['InqueryIndex']
+                                                ],
+                                                [
+                                                    'allow' => true,
+                                                    'actions' => ['view'],
+                                                    'roles' => ['InqueryView']
+                                                ],
+                                                [
+                                                    'allow' => true,
+                                                    'actions' => ['create'],
+                                                    'roles' => ['InqueryCreate']
+                                                ],
+                                                [
+                                                    'allow' => true,
+                                                    'actions' => ['update'],
+                                                    'roles' => ['InqueryUpdate']
+                                                ],
+                                                [
+                                                    'allow' => true,
+                                                    'actions' => ['delete'],
+                                                    'roles' => ['InqueryDelete']
+                                                ],
+                                                [
+                                                  'allow'=>true,
+                                                    'actions'=>['pdf'],
+                                                    'roles'=>['InqueryPdf']
+                                                ],
+                            					[
+                                                  'allow'=>true,
+                                                    'actions'=>['help'],
+                                                    'roles'=>['InqueryHelp']
+                                                ],
+                                                [
+                                                  'allow'=>true,
+                                                    'actions'=>['confirm'],
+                                                    'roles'=>['InqueryConfirm']
+                                                ],
                     [
                         'allow' => false
                     ]
@@ -76,6 +111,7 @@ class ManageController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        $this->module->eventClass::afterViewed($model);
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -102,7 +138,11 @@ class ManageController extends Controller
                         $hash=hash('adler32',$model->id);
                         if ($file[0]->saveAs($directory.'/'.$hash.'.'.$file[0]->extension)){
                             $model->afile=$hash.'.'.$file[0]->extension;
-                            $model->save();
+                            if ($model->save()){
+                                $this->module->eventClass::afterAnswer($model);
+                            }else{
+                                $this->module->eventClass::AnswerError($model);
+                            }
                         }
                     }else{
 
@@ -111,11 +151,16 @@ class ManageController extends Controller
                         $hash=hash('adler32',$model->id);
                         if ($file[0]->saveAs($directory.'/'.$hash.'.'.$file[0]->extension)){
                             $model->afile=$hash.'.'.$file[0]->extension;
-                            $model->save();
+                            if ($model->save()){
+                                $this->module->eventClass::afterAnswer($model);
+                            }else{
+                                $this->module->eventClass::AnswerError($model);
+                            }
                         }
                     }
                 }
             }
+
 
         }else{
             if (!empty($model->qfile)){
